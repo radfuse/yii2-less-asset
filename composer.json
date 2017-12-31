@@ -1,0 +1,19 @@
+{
+    "name": "radfuse/yii2-less-asset",
+    "description": "Yii2 AssetBundle with lessc",
+    "authors": [
+        {
+            "name": "Radfuse",
+            "email": "info@radfuse.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "leafo/lessphp": "@dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "radfuse\\less\\": ""
+        }
+    }
+}
