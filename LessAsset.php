@@ -30,17 +30,23 @@ class LessAsset extends AssetBundle
                 $srcFile = "$src/" . $this->sourceFolder . "/" . $lessFile . '.less';
                 $destCss = $this->destinationFolder . "/" . $lessFile . ".css";
                 $destFile = $this->basePath . "/" . $destCss;
-
                 if(is_file($srcFile)){
-                    if(!$this->_less){
-                        $this->_less = new \lessc();
-                        $this->_less->setFormatter(YII_DEBUG ? "lessjs" : "compressed");
-                    }
-
+                    $timeLess = filemtime($srcFile);
+                    $timeCss = 0;
                     if(is_file($destFile))
-                        unlink($destFile);
-                    $this->_less->compileFile($srcFile, $destFile);
-
+				        $timeCss = filemtime($destFile);
+			
+                    if($timeCss != $timeLess){
+                        if(is_file($destFile))
+                            unlink($destFile);
+                        if(!$this->_less){
+                            $this->_less = new \lessc();
+                            $this->_less->setFormatter(YII_DEBUG ? "lessjs" : "compressed");
+                        }
+                        
+                        $this->_less->compileFile($srcFile, $destFile);
+                        touch($destFile, $timeLess);
+                    }
                     if(is_file($destFile))
                         $this->css[] = $destCss;
                 }
